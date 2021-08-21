@@ -1,14 +1,15 @@
 function [ g,geq ] = nonlcon(r)
-%UNTITLED3 Summary of this function goes here
-%   Detailed explanation goes here
+
+    %Variable
+    global yieldStress
     
     % Finite Element Method
-    [disp_node2_x,disp_node2_y,stress,yieldStress] = finiteElementMethod(r(1,:),r(2,:));
+    [disp, stress] = finiteElementMethod(r(1,:),r(2,:));
 
 
     % Q(2) <= 0.02
     % g(1) = sqrt(Q(2).x^2 + Q(2).y^2)-0.02 <= 0
-    g(1) = sqrt(disp_node2_x.^2 + disp_node2_y.^2) - 0.02;    
+    g(1) = sqrt(disp(3).^2 + disp(4).^2) - 0.02;    
     
     % abs(stress) <= YieldStress = 250 MPa
     % g(2~11) = abs(stress(1~10)) - yield <= 0
@@ -17,4 +18,5 @@ function [ g,geq ] = nonlcon(r)
     end
 
     geq = [];
+    
 end

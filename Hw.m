@@ -1,3 +1,14 @@
+%% Constants
+%%% Set the material properties of 10-bar truss 
+%%% used in functions to "global constant"s
+
+global length E density yieldStress
+
+length = 9.14;          % 9.14 m
+E = 200*10.^9;          % 200 GPa
+density = 7860;         % 7860 kg * m^-3
+yieldStress = 2.5E+08;  % 250 MPa
+
 %% Optimization
 % % %     X = fmincon(FUN,X0,A,B,Aeq,Beq,LB,UB,NONLCON,OPTIONS) minimizes with
 % % %     the default optimization parameters replaced by values in OPTIONS, an
