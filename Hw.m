@@ -23,7 +23,7 @@ b=[];           %絬┦ぃ单Α╇兵ン玒计秖 AX <= b
 Aeq=[];         %絬┦ぃ单Α╇兵ン玒计秖
 beq=[];         %絬┦单Α╇兵ン玒计秖 AeqX = beq
 ub=[0.5;0.5];       %砞璸丁upper bounds
-lb=[0;0];       %砞璸丁lower bounds
+lb=[0.001;0.001];       %砞璸丁lower bounds
 options = optimset('display','off','Algorithm','sqp');
 
 [r,fval,exitflag] = fmincon(@(r)obj(r),r0,A,b,Aeq,beq,lb,ub,...

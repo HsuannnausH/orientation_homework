@@ -21,12 +21,25 @@ function [ disp, stress] = finiteElementMethod( r1,r2 )
     index = ones(10,1);
     
     for i = 1:6
-        for j = 1:size(nodeInfo{i},2)
-            element = nodeInfo{i}(j);
-            elementToNode(element,index(element)) = i;
-            index(element) = index(element) + 1;
+        for j = 1:size(nodeInfo{j},2)
+            element = nodeInfo{i}(j)
+            elementToNode(element,index(element))
         end
     end
+
+%     for i = 1:10
+%         for j = 1:6
+%             for k = 1:size(nodeInfo{j},2)
+%                 if nodeInfo{j}(k) == i
+%                     elementToNode(i,index) = j;
+%                     index = index + 1;
+%                     break
+%                 end 
+%             end
+%         end
+%         index = 1;
+%     end
+
     % elementToNode = [3 5;
     %                  1 3;
     %                  4 6;
@@ -40,6 +53,7 @@ function [ disp, stress] = finiteElementMethod( r1,r2 )
 
     %% Create the elementTable using elementToNode
     %%% (10,4) = [A L cos sin]
+
     elementTable = zeros(10,4);
 
     for i = 1:10
@@ -69,6 +83,7 @@ function [ disp, stress] = finiteElementMethod( r1,r2 )
 
     %% Stiffness Matrix
     %%% Important part!
+
     stiffnessMatrix = zeros(12,12);
     globalDOF = zeros(1,4);
 
@@ -93,6 +108,7 @@ function [ disp, stress] = finiteElementMethod( r1,r2 )
     end
 
     %% Displacement
+
     force = zeros(8,1);
     force(4) = -1E+07;  % 1.0 x 10^7 N
     force(8) = -1E+07;
@@ -110,6 +126,7 @@ function [ disp, stress] = finiteElementMethod( r1,r2 )
     
 
     %% Stress
+       
     stress = zeros(10,1);
     trans = zeros(1,4);
     disp_element = zeros(4,1);
@@ -136,6 +153,7 @@ function [ disp, stress] = finiteElementMethod( r1,r2 )
     end
 
     %% Reaction Force
+
     % Duplicate the 9~12rows&column of stiffnessMatrix
     stiffness_reac = zeros(4,12);
     for i = 1:4
