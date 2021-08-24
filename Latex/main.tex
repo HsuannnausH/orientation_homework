@@ -78,7 +78,8 @@ BoldFont=NotoSansTC-Regular.otf]     % 中文字型_黑體
 % Section 1
 \section{問題描述}
 
-    十桿衍架(10-bar truss)由十個長桿件組成並且有6個端點，其中第5、6號端點為固定端，桿件的配置如圖\ref{10-bar truss}所示。
+    十桿衍架(10-bar truss)由十個長桿件組成並且有6個端點，
+    其中第5、6號端點為固定端，桿件的配置如圖\ref{10-bar truss}所示。
     
     \begin{figure}[h]
         \centering
@@ -87,8 +88,9 @@ BoldFont=NotoSansTC-Regular.otf]     % 中文字型_黑體
         \label{10-bar truss}
     \end{figure}
     
-    所有桿件的截面皆為圓形，桿件1到桿件6的截面半徑同為$r1$且長度為$9.14\  m$；桿件7到桿件8的截面半徑同為$r2$。
-    桿件所使用的材料為剛，相關的材料性質有：
+    所有桿件的截面皆為圓形，桿件1到桿件6的截面半徑同為$r_1$且長度為$9.14\ m$；
+    桿件7到桿件8的截面半徑同為$r_2$。
+    桿件所使用的材料為鋼，相關的材料性質有：
     
     \begin{enumerate}
         \item 密度 $\rho = 7860\ kg/m^3$
@@ -96,9 +98,9 @@ BoldFont=NotoSansTC-Regular.otf]     % 中文字型_黑體
         \item 降伏係數(Yield stress) $\sigma_y = 250\ MPa$
     \end{enumerate}
     
-    端點4及端點5有一向下的外力$F = 1.0x10^-7\ N$，
+    端點4及端點5各有一向下的外力$F = 1.0\times10^-7\ N$，
     在所有桿件的應力不超過降伏應力且端點2的位移小於$0.02\ m$的條件下，
-    求桿件截面半徑$r1$與$r2$的值，使得十桿衍架整體重量為最輕。
+    求桿件截面半徑$r_1$與$r_2$的值，使得十桿衍架整體重量為最輕。
     
 \newpage
 %----------------Next Page--------------
@@ -117,15 +119,13 @@ BoldFont=NotoSansTC-Regular.otf]     % 中文字型_黑體
             \item 建立元素表(Element Table)：
                   元素表內包含各桿件的長度、截面積、角度等
             \item 建立剛性矩陣(Stiffness Matrix)：
-                  利用元素表計算出剛性矩陣$K$，表示出6個端點的12個自由度上下位移與受力之間的關係
+                  利用元素表計算出剛性矩陣$\mathbf{K}$，表示出6個端點的12個自由度上下位移與受力之間的關係
             \item 計算各個節點的位移：
-                  透過$F=KQ$的關係式求出各點在x,y兩方向的位移量
+                  透過$\mathbf{F} = \mathbf{K}\mathbf{Q}$的關係式求出各點在$x,\ y$兩方向的位移量
             \item 計算各桿件的應力：
                   透過$\sigma=E\varepsilon$的關係式求出各桿件的應力
             \item 計算反作用力：
-                  同樣使用$F=KQ$的關係式求出固定端點5、6的反作用力
-            \item 最佳化：
-                  將問題條件轉換為數學式，最佳化後得到最佳值與最佳解
+                  同樣使用$\mathbf{F} = \mathbf{K}\mathbf{Q}$的關係式求出固定端點5、6的反作用力
         \end{enumerate}
         
         \newpage
@@ -157,18 +157,18 @@ BoldFont=NotoSansTC-Regular.otf]     % 中文字型_黑體
                 \item 正弦 $sin\theta_e=\displaystyle\frac{\left(y_{nodej}-y_{nodei}\right)}{L}$
             \end{enumerate}
 
-            以\texttt{elementToNode}搭配\texttt{nodeTable}取得各端點的$x,y$座標值，
+            以\texttt{elementToNode}搭配\texttt{nodeTable}取得各端點的$x,\ y$座標值，
             根據上方提供的公式計算各項數值
             \lstinputlisting[firstline=41,lastline=67]{finiteElementMethod.m}
 
         \newpage
         \subsubsection{剛性矩陣}
 
-            剛性矩陣(Stiffness Matrix)為表示各端點的位移與受力關係的矩陣，在數學式中以$K$表示。
-            各桿件皆存在左右兩端點，因此其剛性矩陣大小為4x4，表示出4個自由度(Degree of freedom,DOF)位移與受力的關係，
+            剛性矩陣(Stiffness Matrix)為表示各端點的位移與受力關係的矩陣，在數學式中以$\mathbf{K}$表示。
+            各桿件皆存在左右兩端點，因此其剛性矩陣$\mathbf{k}^e$大小為4x4，表示出4個自由度(Degree of freedom, DOF)位移與受力的關係，
             其公式如下：
             \begin{displaymath}
-                k^e = \frac{EA_e}{L_e}\left[
+                \mathbf{k}^e = \frac{EA_e}{L_e}\left[
                     \begin{array}{cccc}
                         c^2 & cs & -c^2 & -cs\\
                         cs & s^2 & -cs & -s^2\\
@@ -194,7 +194,7 @@ BoldFont=NotoSansTC-Regular.otf]     % 中文字型_黑體
             % \newpage
             \texttt{elementTable}中提供計算剛性矩陣所需的$L_e,A_e,cos,sin$，\\
             以\texttt{elementToNode}取得桿件的4個DOF值，
-            並依序將計算的結果加總至\texttt{stiffnessMatrix}中對應的DOF欄位
+            並依序將各桿件的計算結果加總至\texttt{stiffnessMatrix}中對應的DOF欄位
             \lstinputlisting[firstline=72,lastline=93]{finiteElementMethod.m}
         
         \newpage
@@ -212,14 +212,14 @@ BoldFont=NotoSansTC-Regular.otf]     % 中文字型_黑體
             \begin{displaymath}
                 \mathbf{F}_{8\times1} = \mathbf{K}_{8\times8}\times\mathbf{Q}_{8\times1}
             \end{displaymath}
-            等式兩邊同乘$K^{-1}$：
+            等式兩邊同乘$K^{-1}$計算DOF1到DOF8的位移：
             \begin{displaymath}
                 \mathbf{K}^{-1}\mathbf{F} = \mathbf{Q}
             \end{displaymath}
 
             將原為12x12的\texttt{stiffnessMatrix}複製到
             \texttt{stiffness\_disp}並轉換為8x8的矩陣，
-            利用上述公式計算DOF1~DOF8的位移量
+            利用上述公式計算DOF1到DOF8的位移量
             \lstinputlisting[firstline=95,lastline=109]{finiteElementMethod.m}
 
         \subsubsection{桿件應力}
@@ -253,8 +253,8 @@ BoldFont=NotoSansTC-Regular.otf]     % 中文字型_黑體
         \subsubsection{反作用力}
 
             由於端點5、端點6為固定點，因此在此會有反作用力的產生。
-            與2.1.4中提到的計算方式相同，因為只計算DOF9~DOF12的作用力，
-            因此將剛性矩陣調整為4x12的大小：
+            與2.1.4中提到的計算方式相同，因為只計算DOF9到DOF12的作用力，
+            因此將剛性矩陣調整為4x12的大小，只取第9到第12列：
             \begin{displaymath}
                 \mathbf{F}_{4\times1} = \mathbf{K}_{4\times12}\times\mathbf{Q}_{12\times1}
             \end{displaymath}
@@ -282,8 +282,8 @@ BoldFont=NotoSansTC-Regular.otf]     % 中文字型_黑體
         \lstinputlisting[firstline=1,lastline=22]{nonlcon.m}
         \lstinputlisting[firstline=1,lastline=1]{finiteElementMethod.m}
         主函式\textbf{\texttt{Hw.m}}則用來執行\texttt{fmincon}計算最佳值、最佳解；
-        同時於主函式中存取常數(楊式係數、密度、長度、降伏應力)的值並設為廣域變數，
-        日後修改參數及程式維護較便利，及函式間的取值也較不易有錯誤產生
+        同時於主函式中存取常數(楊式係數、密度、桿件長度、降伏應力)的值並設為廣域變數，
+        日後修改參數及程式維護較便利，函式間的取值也較不易有錯誤產生
         \lstinputlisting[firstline=19,lastline=30]{Hw.m}
         \lstinputlisting[firstline=5,lastline=10]{Hw.m}
 
@@ -293,5 +293,10 @@ BoldFont=NotoSansTC-Regular.otf]     % 中文字型_黑體
 
 % Section 3
 \section{結論}
+
+    十桿衍架經過最佳化後得到了最佳值與最佳解，
+    在端點2位移小於$0.02\ m$且各桿件應力值皆不超過降伏應力$\sigma_y$的限制下，
+    最小的重量為$212410\ kg$；
+    其對應的桿件截面半徑分別為$r_1 = 0.3\ m,\ r_2 = 0.2663\ m$。
 
 \end{document}
